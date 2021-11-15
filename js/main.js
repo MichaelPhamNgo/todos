@@ -3,22 +3,22 @@ const tasks = document.querySelector("#todos");
 let editTaskId = -1;
 function loadTodos() {
   const todos = JSON.parse(localStorage.getItem("todos"));
-  const todoClasses = tasks.classList;  
-  if (todos.length > 0) {   
+  const todoClasses = tasks.classList;
+  if (todos !== null) {
     if (!todoClasses.contains("todo__tasks")) {
       todoClasses.add("todo__tasks");
     }
     const todoTasks = todos.map(function (currentValue) {
       return `<div class="todo__task">
-            <div class="todo__task_title ${
-              currentValue.read === true ? "line-through" : ""
-            }">${currentValue.title}</div>
-            <div class="todo__task_actions">
-              <i class="far fa-eye" onclick="readTask(this)"></i>
-              <i class="fa fa-edit" onclick="editTask(this)"></i>
-              <i class="fa fa-trash" onclick="deleteTask(this)"></i>
-            </div>
-          </div>`;
+              <div class="todo__task_title ${
+                currentValue.read === true ? "line-through" : ""
+              }">${currentValue.title}</div>
+              <div class="todo__task_actions">
+                <i class="far fa-eye" onclick="readTask(this)"></i>
+                <i class="fa fa-edit" onclick="editTask(this)"></i>
+                <i class="fa fa-trash" onclick="deleteTask(this)"></i>
+              </div>
+            </div>`;
     });
 
     let res = "";
@@ -26,9 +26,9 @@ function loadTodos() {
       res = res.concat(todoTasks[i]);
     }
     tasks.innerHTML = res;
-  } else {    
+  } else {
     if (todoClasses.contains("todo__tasks")) {
-        todoClasses.remove("todo__tasks");
+      todoClasses.remove("todo__tasks");
     }
     tasks.innerHTML = "";
   }
@@ -44,8 +44,8 @@ document
       notify.innerHTML = `<div class="toast toast--warning">
             <div class="toast__icon">
                 <i class="fas fa-exclamation-circle toast__icon--warning"></i>
-            </div>        
-            <div class="toast__message">Please add a new todo.</div>                
+            </div>
+            <div class="toast__message">Please add a new todo.</div>
             </div>`;
       setTimeout(function () {
         notify.innerHTML = "";
@@ -54,8 +54,8 @@ document
       notify.innerHTML = `<div class="toast toast--success">
             <div class="toast__icon">
                 <i class="fas fa-check-circle toast__icon--success"></i>
-            </div>        
-            <div class="toast__message">Add a todo successful.</div>                
+            </div>
+            <div class="toast__message">Add a todo successful.</div>
             </div>`;
       setTimeout(function () {
         notify.innerHTML = "";
@@ -67,7 +67,7 @@ document
         }
         todos.push({
           title: todo,
-          read: false,
+          read: false
         });
         localStorage.setItem("todos", JSON.stringify(todos));
         loadTodos();
@@ -78,7 +78,7 @@ document
         loadTodos();
         editTaskId = -1;
       }
-    }    
+    }
   });
 
 document
@@ -91,8 +91,8 @@ document
         notify.innerHTML = `<div class="toast toast--warning">
             <div class="toast__icon">
                 <i class="fas fa-exclamation-circle toast__icon--warning"></i>
-            </div>        
-            <div class="toast__message">Please add a new todo.</div>                
+            </div>
+            <div class="toast__message">Please add a new todo.</div>
             </div>`;
         setTimeout(function () {
           notify.innerHTML = "";
@@ -101,8 +101,8 @@ document
         notify.innerHTML = `<div class="toast toast--success">
             <div class="toast__icon">
                 <i class="fas fa-check-circle toast__icon--success"></i>
-            </div>        
-            <div class="toast__message">Add a todo successful.</div>                
+            </div>
+            <div class="toast__message">Add a todo successful.</div>
             </div>`;
         setTimeout(function () {
           notify.innerHTML = "";
@@ -114,7 +114,7 @@ document
           }
           todos.push({
             title: value,
-            read: false,
+            read: false
           });
           localStorage.setItem("todos", JSON.stringify(todos));
           loadTodos();
@@ -126,7 +126,7 @@ document
           editTaskId = -1;
         }
       }
-    }    
+    }
   });
 
 function readTask(task) {
@@ -155,15 +155,15 @@ function editTask(task) {
 }
 
 function deleteTask(task) {
-    const title = task.parentNode.previousElementSibling.innerHTML;
+  const title = task.parentNode.previousElementSibling.innerHTML;
   let todos = JSON.parse(localStorage.getItem("todos"));
   for (let i = 0; i < todos.length; ++i) {
     if (todos[i].title.toLowerCase().localeCompare(title.toLowerCase()) === 0) {
-        todos.splice(i,1);
-        localStorage.setItem("todos", JSON.stringify(todos));
-        break;
+      todos.splice(i, 1);
+      localStorage.setItem("todos", JSON.stringify(todos));
+      break;
     }
-  }  
+  }
   document.querySelector(".todo__input_text").value = "";
   loadTodos();
 }
