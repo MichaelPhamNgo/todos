@@ -5,28 +5,35 @@ function loadTodos() {
   const todos = JSON.parse(localStorage.getItem("todos"));
   const todoClasses = tasks.classList;
   if (todos !== null) {
-    if (!todoClasses.contains("todo__tasks")) {
-      todoClasses.add("todo__tasks");
-    }
-    const todoTasks = todos.map(function (currentValue) {
-      return `<div class="todo__task">
-              <div class="todo__task_title ${
-                currentValue.read === true ? "line-through" : ""
-              }">${currentValue.title}</div>
-              <div class="todo__task_actions">
-                <i class="far fa-eye" onclick="readTask(this)"></i>
-                <i class="fa fa-edit" onclick="editTask(this)"></i>
-                <i class="fa fa-trash" onclick="deleteTask(this)"></i>
-              </div>
-            </div>`;
-    });
+    if(todos.length > 0) {
+      if (!todoClasses.contains("todo__tasks")) {
+        todoClasses.add("todo__tasks");
+      }
+      const todoTasks = todos.map(function (currentValue) {
+        return `<div class="todo__task">
+                <div class="todo__task_title ${
+                  currentValue.read === true ? "line-through" : ""
+                }">${currentValue.title}</div>
+                <div class="todo__task_actions">
+                  <i class="far fa-eye" onclick="readTask(this)"></i>
+                  <i class="fa fa-edit" onclick="editTask(this)"></i>
+                  <i class="fa fa-trash" onclick="deleteTask(this)"></i>
+                </div>
+              </div>`;
+      });
 
-    let res = "";
-    for (let i = 0; i < todoTasks.length; ++i) {
-      res = res.concat(todoTasks[i]);
-    }
-    tasks.innerHTML = res;
-  } else {
+      let res = "";
+      for (let i = 0; i < todoTasks.length; ++i) {
+        res = res.concat(todoTasks[i]);
+      }
+      tasks.innerHTML = res;  
+    } else {
+      if (todoClasses.contains("todo__tasks")) {
+        todoClasses.remove("todo__tasks");
+      }
+      tasks.innerHTML = "";
+    }    
+  } else {    
     if (todoClasses.contains("todo__tasks")) {
       todoClasses.remove("todo__tasks");
     }
